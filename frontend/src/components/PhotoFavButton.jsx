@@ -3,14 +3,19 @@ import React, { useCallback, useState } from 'react';
 import { FavIcon } from './FavIcon';
 import '../styles/PhotoFavButton.scss';
 
-function PhotoFavButton() {
+const PhotoFavButton = function() {
+
+  const [status, setStatus] = useState('inactive');
+  const clickHandler = () => status === 'inactive' ? setStatus('active') : setStatus('inactive');
+  const color = status === 'inactive' ? 'EEEEEE' : '#db0d0d';
+
   return (
-    <div className="photo-list__fav-icon">
+    <div className="photo-list__fav-icon" onClick={clickHandler}>
       <div className="photo-list__fav-icon-svg">
-        {/* Insert React */}
+        <FavIcon fill={color} />
       </div>
     </div>
   );
-}
+};
 
 export default PhotoFavButton;
