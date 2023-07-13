@@ -1,13 +1,10 @@
 import React from 'react';
-import PhotoList from './components/PhotoList';
-import TopicList from './components/TopicList';
 import './App.scss';
-import TopNavigationBar from './components/TopNavigationBar';
+import HomeRoute from './components/HomeRoute';
 
 const App = () => (
   <div className="App">
-    <TopNavigationBar />
-    <PhotoList />
+    <HomeRoute />
   </div>
 );
 
