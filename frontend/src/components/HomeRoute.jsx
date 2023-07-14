@@ -12,11 +12,16 @@ const HomeRoute = () => {
     };
   }));
 
+  const [likedPhotos, setLikedPhotos] = useState(false);
+
   const toggleLike = function(id) {
     let newPhotoArr = [];
     for (const photo of newPhotos) {
       if (photo.id === id) {
         photo.isLiked = !photo.isLiked;
+        if (photo.isLiked) {
+          setLikedPhotos(true);
+        }
         newPhotoArr.push(photo);
       } else {
         newPhotoArr.push(photo);
@@ -27,7 +32,7 @@ const HomeRoute = () => {
 
   return (
     <div className="home-route">
-      <TopNavigationBar />
+      <TopNavigationBar toggleLike={toggleLike} likedPhotos={likedPhotos} />
       <PhotoList photos={newPhotos} toggleLike={toggleLike} />
     </div>
   );
