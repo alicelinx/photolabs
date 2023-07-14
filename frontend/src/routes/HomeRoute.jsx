@@ -3,8 +3,9 @@ import PhotoList from "../components/PhotoList";
 import TopNavigationBar from "../components/TopNavigationBar";
 import '../styles/HomeRoute.scss';
 import photos from '../mocks/photos.js';
+import PhotoDetailsModal from "./PhotoDetailsModal";
 
-const HomeRoute = (props) => {
+const HomeRoute = () => {
   const [newPhotos, setNewPhotos] = useState(photos.map(photo => {
     return {
       ...photo,
@@ -13,6 +14,8 @@ const HomeRoute = (props) => {
   }));
 
   const [likedPhotos, setLikedPhotos] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleShowLiked = (newPhotoArr) => {
     let isLiked = false;
@@ -39,10 +42,23 @@ const HomeRoute = (props) => {
     setNewPhotos(newPhotoArr);
   };
 
+  const toggleModal = (id) => {
+    let chosenPhoto = '';
+    photos.forEach((photo) => {
+      if (photo.id === id) {
+        chosenPhoto = photo;
+      }
+    });
+    console.log(chosenPhoto);
+    setIsModalOpen(!isModalOpen);
+  };
+
+
   return (
     <div className="home-route">
       <TopNavigationBar toggleLike={toggleLike} likedPhotos={likedPhotos} />
-      <PhotoList photos={newPhotos} toggleLike={toggleLike} openModal={props.openModal} />
+      <PhotoList photos={newPhotos} toggleLike={toggleLike} openModal={toggleModal} />
+      {isModalOpen && <PhotoDetailsModal closeModal={toggleModal} />}
     </div>
   );
 };
