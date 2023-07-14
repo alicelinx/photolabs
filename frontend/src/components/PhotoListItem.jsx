@@ -9,7 +9,7 @@ const PhotoListItem = (props) => {
       {/* <span>Username: {props.username}</span>
       <span><img className='photo-list__user-profile' src={props.profile} /></span> */}
       <PhotoFavButton toggleLike={props.toggleLike} photoId={props.photoId} />
-      <img className='photo-list__image' src={props.src} />
+      <img className='photo-list__image' src={props.src} onClick={props.openModal} />
     </div>
   );
 };

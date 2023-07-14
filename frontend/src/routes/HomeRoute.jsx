@@ -1,10 +1,10 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import PhotoList from "../components/PhotoList";
 import TopNavigationBar from "../components/TopNavigationBar";
 import '../styles/HomeRoute.scss';
 import photos from '../mocks/photos.js';
 
-const HomeRoute = () => {
+const HomeRoute = (props) => {
   const [newPhotos, setNewPhotos] = useState(photos.map(photo => {
     return {
       ...photo,
@@ -42,7 +42,7 @@ const HomeRoute = () => {
   return (
     <div className="home-route">
       <TopNavigationBar toggleLike={toggleLike} likedPhotos={likedPhotos} />
-      <PhotoList photos={newPhotos} toggleLike={toggleLike} />
+      <PhotoList photos={newPhotos} toggleLike={toggleLike} openModal={props.openModal} />
     </div>
   );
 };
