@@ -7,15 +7,14 @@ const App = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const openModal = () => {
+  const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-
   return (
     <div className="App">
-      <HomeRoute openModal={openModal} />
-      {isModalOpen && <PhotoDetailsModal />}
+      <HomeRoute openModal={toggleModal} />
+      {isModalOpen && <PhotoDetailsModal closeModal={toggleModal} />}
     </div>
   );
 };
