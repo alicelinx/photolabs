@@ -3,10 +3,10 @@ import PhotoListItem from './PhotoListItem';
 import '../styles/PhotoList.scss';
 import photos from '../mocks/photos.js';
 
-const PhotoList = () => {
+const PhotoList = (props) => {
   return (
     <ul className="photo-list">
-      {photos.map((photo, index) => <PhotoListItem key={index} src={photo.urls.regular} />)}
+      {props.photos.map((photo, index) => <PhotoListItem key={index} src={photo.urls.regular} photo={photo} toggleLike={props.toggleLike} photoId={photo.id} />)}
     </ul>
   );
 };
