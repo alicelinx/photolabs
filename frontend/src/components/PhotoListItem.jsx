@@ -6,10 +6,15 @@ import '../styles/PhotoListItem.scss';
 const PhotoListItem = (props) => {
   return (
     <div className='photo-list__item'>
-      {/* <span>Username: {props.username}</span>
-      <span><img className='photo-list__user-profile' src={props.profile} /></span> */}
       <PhotoFavButton toggleLike={props.toggleLike} photoId={props.photoId} />
       <img className='photo-list__image' src={props.src} onClick={props.openModal} />
+      <br />
+      <div className='photo-list__user-details'>
+        <span><img className='photo-list__user-profile' src={props.userImage} /></span>
+        <span className='photo-list__user-info'>{props.userName}
+          <br /><span className='photo-list__user-location'>{props.userLocationCity}, {props.userLocationCountry}</span>
+        </span>
+      </div>
     </div>
   );
 };
