@@ -11,7 +11,13 @@ const PhotoFavButton = function(props) {
   return (
     <div className="photo-list__fav-icon" onClick={clickHandler}>
       <div className="photo-list__fav-icon-svg">
-        <FavIcon fill={!props.isLiked ? '#EEEEEE' : '#db0d0d'} />
+        <FavIcon
+          width={20}
+          height={17}
+          fill={!props.isLiked ? '#EEEEEE' : '#db0d0d'}
+          outlineWidth={2}
+          stroke={'#C80000'}
+        />
       </div>
     </div>
   );

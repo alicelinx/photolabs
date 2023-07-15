@@ -21,7 +21,9 @@ export const PhotoDetailsModal = (props) => {
         </svg>
       </button>
       <div className='photo-container'>
-        <PhotoFavButton toggleLike={props.toggleLike} photoId={props.photoId} isLiked={props.isLiked} />
+        <div className='selected-photo-modal__like-button'>
+          <PhotoFavButton toggleLike={props.toggleLike} photoId={props.viewedPhoto.id} isLiked={props.viewedPhoto.isLiked} />
+        </div>
         <img className='photo-details-modal__image' src={props.photoSrc} />
       </div>
       <div className='photo-details-modal__images'>

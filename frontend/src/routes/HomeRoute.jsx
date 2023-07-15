@@ -2,78 +2,41 @@ import React, { useState } from "react";
 import PhotoList from "../components/PhotoList";
 import TopNavigationBar from "../components/TopNavigationBar";
 import '../styles/HomeRoute.scss';
-import photos from '../mocks/photos.js';
 import PhotoDetailsModal from "./PhotoDetailsModal";
+import useApplicationData from "../hooks/useApplicationData";
 
 const HomeRoute = () => {
-  const [newPhotos, setNewPhotos] = useState(photos.map(photo => {
-    return {
-      ...photo,
-      isLiked: false
-    };
-  }));
+  const { state, dispatch } = useApplicationData();
 
-  const [likedPhotos, setLikedPhotos] = useState(false);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [viewedPhoto, setViewedPhoto] = useState(null);
-
-  const [similarPhotos, setSimilarPhotos] = useState(null);
-
-  const handleShowLiked = (newPhotoArr) => {
-    let isLiked = false;
-    for (const photo of newPhotoArr) {
-      if (photo.isLiked) {
-        isLiked = true;
-      }
-    }
-    setLikedPhotos(isLiked);
+  const handleShowLiked = () => {
+    dispatch({ type: 'SWITCH_PHOTO_IS_LIKED' });
   };
 
   const toggleLike = function(id) {
-    let newPhotoArr = [];
-    for (const photo of newPhotos) {
-      if (photo.id === id) {
-        photo.isLiked = !photo.isLiked;
-        newPhotoArr.push(photo);
-      } else {
-        newPhotoArr.push(photo);
-      }
-    }
-    handleShowLiked(newPhotoArr);
-    setNewPhotos(newPhotoArr);
+    dispatch({ type: 'TOGGLE_LIKE', data: id });
+    handleShowLiked();
   };
 
   const toggleModal = (id) => {
-    let selectedPhoto = '';
-    let similarPhotoArr = [];
-    newPhotos.forEach((photo) => {
-      if (photo.id === id) {
-        selectedPhoto = photo;
-        setViewedPhoto(photo);
-        Object.keys(photo.similarPhotos).forEach((key) => {
-          similarPhotoArr.push(photo.similarPhotos[key]);
-        });
-      }
-    });
-    setSimilarPhotos(similarPhotoArr);
-    setIsModalOpen(!isModalOpen);
+    console.log(id);
+    dispatch({ type: 'TOGGLE_MODAL', data: id });
   };
 
 
   return (
     <div className="home-route">
-      <TopNavigationBar likedPhotos={likedPhotos} />
-      <PhotoList photos={newPhotos} toggleLike={toggleLike} openModal={toggleModal} />
-      {isModalOpen && <PhotoDetailsModal
-        viewedPhoto={viewedPhoto}
-        closeModal={toggleModal}
-        photoSrc={viewedPhoto.urls.regular}
-        similarPhotos={similarPhotos}
+      <TopNavigationBar likedPhotos={state.likedPhotos} />
+      <PhotoList
+        photos={state.newPhotos}
         toggleLike={toggleLike}
-        photoId={viewedPhoto.id}
-        isLiked={viewedPhoto.isLiked}
+        openModal={toggleModal}
+      />
+      {state.isModalOpen && <PhotoDetailsModal
+        viewedPhoto={state.viewedPhoto}
+        closeModal={toggleModal}
+        photoSrc={state.viewedPhoto ? state.viewedPhoto.urls.regular : ''}
+        similarPhotos={state.similarPhotos}
+        toggleLike={toggleLike}
       />}
     </div>
   );
