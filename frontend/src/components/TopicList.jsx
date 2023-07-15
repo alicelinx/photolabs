@@ -10,7 +10,7 @@ const TopicList = (props) => {
     <div className="top-nav-bar__topic-list">
       {topics.map((topic, index) => <TopicListItem key={index} title={topic.title} />)}
       <div className="topic-list__item">
-        <FavIcon fill={'#db0d0d'} toggleLike={props.toggleLike} displayAlert={props.likedPhotos} />
+        <FavIcon fill={'#db0d0d'} displayAlert={props.likedPhotos} />
       </div>
     </div>
   );

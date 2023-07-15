@@ -17,6 +17,10 @@ const HomeRoute = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [viewedPhoto, setViewedPhoto] = useState(null);
+
+  const [similarPhotos, setSimilarPhotos] = useState(null);
+
   const handleShowLiked = (newPhotoArr) => {
     let isLiked = false;
     for (const photo of newPhotoArr) {
@@ -37,28 +41,40 @@ const HomeRoute = () => {
         newPhotoArr.push(photo);
       }
     }
-
     handleShowLiked(newPhotoArr);
     setNewPhotos(newPhotoArr);
   };
 
   const toggleModal = (id) => {
-    let chosenPhoto = '';
-    photos.forEach((photo) => {
+    let selectedPhoto = '';
+    let similarPhotoArr = [];
+    newPhotos.forEach((photo) => {
       if (photo.id === id) {
-        chosenPhoto = photo;
+        selectedPhoto = photo;
+        setViewedPhoto(photo);
+        Object.keys(photo.similarPhotos).forEach((key) => {
+          similarPhotoArr.push(photo.similarPhotos[key]);
+        });
       }
     });
-    console.log(chosenPhoto);
+    setSimilarPhotos(similarPhotoArr);
     setIsModalOpen(!isModalOpen);
   };
 
 
   return (
     <div className="home-route">
-      <TopNavigationBar toggleLike={toggleLike} likedPhotos={likedPhotos} />
+      <TopNavigationBar likedPhotos={likedPhotos} />
       <PhotoList photos={newPhotos} toggleLike={toggleLike} openModal={toggleModal} />
-      {isModalOpen && <PhotoDetailsModal closeModal={toggleModal} />}
+      {isModalOpen && <PhotoDetailsModal
+        viewedPhoto={viewedPhoto}
+        closeModal={toggleModal}
+        photoSrc={viewedPhoto.urls.regular}
+        similarPhotos={similarPhotos}
+        toggleLike={toggleLike}
+        photoId={viewedPhoto.id}
+        isLiked={viewedPhoto.isLiked}
+      />}
     </div>
   );
 };

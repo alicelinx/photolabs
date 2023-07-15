@@ -1,6 +1,6 @@
 .photo-details-modal {
   background-color: white;
-  box-shadow: 0 0 0 50vmax rgba(0,0,0,.5);
+  box-shadow: 0 0 0 50vmax rgba(0, 0, 0, .5);
   position: absolute;
   top: 55%;
   left: 50%;
@@ -25,7 +25,8 @@
 }
 
 .photo-details-modal__images {
-  margin-left: 36px;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
   margin-top: 8px;
 }
 
@@ -54,5 +55,11 @@
   color: #1e1e1e;
   margin-top: 24px;
   margin-bottom: 24px;
+  margin-left: 1.5em;
   width: 90%;
+}
+
+.photo-container {
+  padding: 10px 30px;
+  text-align: center;
 }

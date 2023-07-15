@@ -16,6 +16,7 @@ const PhotoList = (props) => {
         userImage={photo.user.profile}
         userLocationCity={photo.location.city}
         userLocationCountry={photo.location.country}
+        isLiked={photo.isLiked}
       />)}
     </ul>
   );

@@ -5,14 +5,14 @@ import '../styles/PhotoListItem.scss';
 
 const PhotoListItem = (props) => {
 
-  const logPhotoInfo = () => {
+  const openModal = () => {
     props.openModal(props.photoId);
   };
 
   return (
     <div className='photo-list__item'>
-      <PhotoFavButton toggleLike={props.toggleLike} photoId={props.photoId} />
-      <img className='photo-list__image' src={props.src} onClick={logPhotoInfo} />
+      <PhotoFavButton toggleLike={props.toggleLike} photoId={props.photoId} isLiked={props.isLiked} />
+      <img className='photo-list__image' src={props.src} onClick={openModal} />
       <br />
       <div className='photo-list__user-details'>
         <span><img className='photo-list__user-profile' src={props.userImage} /></span>
