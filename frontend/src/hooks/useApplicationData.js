@@ -1,14 +1,9 @@
 /* eslint-disable */
 import { useReducer } from "react";
-import photos from '../mocks/photos.js';
+
 
 const initialState = {
-  newPhotos: photos.map(photo => {
-    return {
-      ...photo,
-      isLiked: false
-    };
-  }),
+  newPhotos: [],
   likedPhotos: false,
   isModalOpen: false,
   viewedPhoto: null,
@@ -34,6 +29,7 @@ const reducer = (state, action) => {
 
     case 'TOGGLE_LIKE': {
       let viewedPhoto = state.viewedPhoto;
+      let similarPhotos = null;
       const newPhotos = state.newPhotos.map(photo => {
         if (photo.id === action.data) {
           return {
@@ -44,6 +40,7 @@ const reducer = (state, action) => {
           return photo;
         }
       });
+
       if (state.viewedPhoto) {
         if (state.viewedPhoto.id === action.data) {
           viewedPhoto = {
@@ -53,10 +50,26 @@ const reducer = (state, action) => {
         }
       }
 
+      if (state.similarPhotos) {
+        const newSimilarPhotos = state.similarPhotos.map((photo) => {
+          if (photo.id === action.data) {
+            return {
+              ...photo,
+              isLiked: !photo.isLiked,
+            };
+          } else {
+            return photo;
+          }
+        });
+        similarPhotos = newSimilarPhotos;
+      }
+
+
       return {
         ...state,
         newPhotos,
         viewedPhoto,
+        similarPhotos
       };
     }
 
@@ -67,12 +80,10 @@ const reducer = (state, action) => {
           isModalOpen: false,
         };
       }
-
       const viewedPhoto = state.newPhotos.filter(photo => photo.id === action.data)[0];
       let similarPhotos = [];
-
-      Object.keys(viewedPhoto.similarPhotos).forEach((key) => {
-        similarPhotos.push({ ...viewedPhoto.similarPhotos[key], isLiked: false });
+      Object.keys(viewedPhoto.similar_photos).forEach((key) => {
+        similarPhotos.push({ ...viewedPhoto.similar_photos[key], isLiked: false });
       });
 
       return {
@@ -83,6 +94,17 @@ const reducer = (state, action) => {
       };
     }
 
+    case 'INITIALIZE_DATA': {
+      return {
+        ...state,
+        newPhotos: action.data.map(photo => {
+          return {
+            ...photo,
+            isLiked: false
+          };
+        }),
+      };
+    }
 
     default: {
       console.log('default');
