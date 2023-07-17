@@ -94,7 +94,7 @@ const reducer = (state, action) => {
       };
     }
 
-    case 'INITIALIZE_DATA': {
+    case 'UPDATE_PHOTOS': {
       return {
         ...state,
         newPhotos: action.data.map(photo => {

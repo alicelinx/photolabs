@@ -6,18 +6,30 @@ import PhotoDetailsModal from "./PhotoDetailsModal";
 import useApplicationData from "../hooks/useApplicationData";
 
 const HomeRoute = () => {
-  // const [photos, setPhotos] = useState([]);
   const [topics, setTopics] = useState([]);
+  const [topic, setTopic] = useState(null);
   const { state, dispatch } = useApplicationData();
 
   useEffect(() => {
     fetch('/api/photos')
-      .then(res => res.json()).then(data => {
-        dispatch({ type: "INITIALIZE_DATA", data });
+      .then(res => res.json())
+      .then(data => {
+        dispatch({ type: "UPDATE_PHOTOS", data });
       });
     fetch('/api/topics')
       .then(res => res.json()).then(data => setTopics(data));
   }, []);
+
+  // fetch photos based on topic id
+  useEffect(() => {
+    if (topic) {
+      fetch(`/api/topics/photos/${topic}`)
+        .then(res => res.json())
+        .then(data => {
+          dispatch({ type: "UPDATE_PHOTOS", data });
+        });
+    }
+  }, [topic]);
 
   const handleShowLiked = () => {
     dispatch({ type: 'SWITCH_PHOTO_IS_LIKED' });
@@ -32,10 +44,14 @@ const HomeRoute = () => {
     dispatch({ type: 'TOGGLE_MODAL', data: id });
   };
 
+  const toggleTopic = (id) => {
+    setTopic(id);
+  };
+
 
   return (
     <div className="home-route">
-      <TopNavigationBar likedPhotos={state.likedPhotos} topics={topics} />
+      <TopNavigationBar likedPhotos={state.likedPhotos} topics={topics} toggleTopic={toggleTopic} />
       <PhotoList
         photos={state.newPhotos}
         toggleLike={toggleLike}

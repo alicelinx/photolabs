@@ -7,7 +7,7 @@ import FavIcon from './FavIcon';
 const TopicList = (props) => {
   return (
     <div className="top-nav-bar__topic-list">
-      {props.topics.map((topic, index) => <TopicListItem key={index} title={topic.title} />)}
+      {props.topics.map((topic, index) => <TopicListItem key={index} title={topic.title} toggleTopic={props.toggleTopic} topicId={topic.id} />)}
       <div className="topic-list__item">
         <FavIcon
           fill={'#db0d0d'}
