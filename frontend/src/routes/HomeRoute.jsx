@@ -31,6 +31,12 @@ const HomeRoute = () => {
         .then(data => {
           dispatch({ type: "UPDATE_PHOTOS", data });
         });
+    } else { // remove current topic
+      fetch('/api/photos')
+        .then(res => res.json())
+        .then(data => {
+          dispatch({ type: "UPDATE_PHOTOS", data });
+        });
     }
   }, [topic]);
 
@@ -51,6 +57,9 @@ const HomeRoute = () => {
     setTopic(id);
   };
 
+  const clearTopic = () => {
+    setTopic(null);
+  };
 
   return (
     <div className="home-route">
@@ -58,6 +67,7 @@ const HomeRoute = () => {
         likedPhotos={state.likedPhotos}
         topics={topics}
         toggleTopic={toggleTopic}
+        clearTopic={clearTopic}
       />
       <PhotoList
         photos={state.newPhotos}
