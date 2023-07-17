@@ -1,7 +1,23 @@
-# react-photolabs
-The PhotoLabs project for the Web Development React course programming.
+# PhotoLabs
 
-# Photolabs
+PhotoLabs is a React-based single-page application (SPA) that allows users to view photos in different contexts.
+
+## Final Product
+
+- Main page
+!["Screenshot of PhotoLabs main page"](https://github.com/alicelinx/photolabs/blob/main/docs/photolabs.png)
+
+- Like photos & notification
+!["Screenshot of liked photo and notification"](https://github.com/alicelinx/photolabs/blob/main/docs/like-photo.png)
+
+- Modal with selected photo and similar photos
+!["Screenshot of modal"](https://github.com/alicelinx/photolabs/blob/main/docs/modal.png)
+
+## Dependencies
+
+- React
+- Express
+- Node v15.14.0
 
 ## Setup
 
@@ -14,7 +30,7 @@ cd frontend
 npm start
 ```
 
-## [Backend] Running Backend Servier
+## [Backend] Running Backend Server
 
 Read `backend/readme` for further setup details.
 
