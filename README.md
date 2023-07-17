@@ -13,6 +13,10 @@ PhotoLabs is a React-based single-page application (SPA) that allows users to vi
 - Modal with selected photo and similar photos
 !["Screenshot of modal"](https://github.com/alicelinx/photolabs/blob/main/docs/modal.png)
 
+## Extra Feature
+
+- Clear topics by clicking home page logo
+
 ## Dependencies
 
 - React
