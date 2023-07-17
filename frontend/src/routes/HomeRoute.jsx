@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+
+import '../styles/HomeRoute.scss';
+
 import PhotoList from "../components/PhotoList";
 import TopNavigationBar from "../components/TopNavigationBar";
-import '../styles/HomeRoute.scss';
 import PhotoDetailsModal from "./PhotoDetailsModal";
 import useApplicationData from "../hooks/useApplicationData";
 
@@ -17,7 +19,8 @@ const HomeRoute = () => {
         dispatch({ type: "UPDATE_PHOTOS", data });
       });
     fetch('/api/topics')
-      .then(res => res.json()).then(data => setTopics(data));
+      .then(res => res.json())
+      .then(data => setTopics(data));
   }, []);
 
   // fetch photos based on topic id
@@ -51,19 +54,25 @@ const HomeRoute = () => {
 
   return (
     <div className="home-route">
-      <TopNavigationBar likedPhotos={state.likedPhotos} topics={topics} toggleTopic={toggleTopic} />
+      <TopNavigationBar
+        likedPhotos={state.likedPhotos}
+        topics={topics}
+        toggleTopic={toggleTopic}
+      />
       <PhotoList
         photos={state.newPhotos}
         toggleLike={toggleLike}
         openModal={toggleModal}
       />
-      {state.isModalOpen && <PhotoDetailsModal
-        viewedPhoto={state.viewedPhoto}
-        closeModal={toggleModal}
-        photoSrc={state.viewedPhoto ? state.viewedPhoto.urls.regular : ''}
-        similarPhotos={state.similarPhotos}
-        toggleLike={toggleLike}
-      />}
+      {state.isModalOpen &&
+        <PhotoDetailsModal
+          viewedPhoto={state.viewedPhoto}
+          closeModal={toggleModal}
+          photoSrc={state.viewedPhoto ? state.viewedPhoto.urls.full : ''}
+          similarPhotos={state.similarPhotos}
+          toggleLike={toggleLike}
+        />
+      }
     </div>
   );
 };

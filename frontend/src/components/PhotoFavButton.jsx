@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { FavIcon } from './FavIcon';
 import '../styles/PhotoFavButton.scss';
+
+import FavIcon from './FavIcon';
 
 const PhotoFavButton = function(props) {
   const clickHandler = () => {
@@ -9,7 +10,10 @@ const PhotoFavButton = function(props) {
   };
 
   return (
-    <div className="photo-list__fav-icon" onClick={clickHandler}>
+    <div
+      className="photo-list__fav-icon"
+      onClick={clickHandler}
+    >
       <div className="photo-list__fav-icon-svg">
         <FavIcon
           width={20}

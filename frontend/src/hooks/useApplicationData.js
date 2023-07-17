@@ -1,7 +1,6 @@
 /* eslint-disable */
 import { useReducer } from "react";
 
-
 const initialState = {
   newPhotos: [],
   likedPhotos: false,
@@ -10,9 +9,7 @@ const initialState = {
   similarPhotos: null
 };
 
-// helper function to update state and return it
 const reducer = (state, action) => {
-  // action => {type: string, data: anything}
   switch (action.type) {
     case 'SWITCH_PHOTO_IS_LIKED': {
       let likedPhotos = false;
@@ -64,7 +61,6 @@ const reducer = (state, action) => {
         similarPhotos = newSimilarPhotos;
       }
 
-
       return {
         ...state,
         newPhotos,
@@ -107,7 +103,7 @@ const reducer = (state, action) => {
     }
 
     default: {
-      console.log('default');
+      console.log(`Unknown type: ${action.type}`);
     }
   }
 };
@@ -117,7 +113,7 @@ const useApplicationData = () => {
   return {
     state,
     dispatch
-
   };
 };
+
 export default useApplicationData;

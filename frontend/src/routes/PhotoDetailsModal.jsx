@@ -1,6 +1,7 @@
 import React from 'react';
 
 import '../styles/PhotoDetailsModal.scss';
+
 import PhotoList from '../components/PhotoList';
 import PhotoFavButton from '../components/PhotoFavButton';
 
@@ -22,13 +23,23 @@ export const PhotoDetailsModal = (props) => {
       </button>
       <div className='photo-container'>
         <div className='selected-photo-modal__like-button'>
-          <PhotoFavButton toggleLike={props.toggleLike} photoId={props.viewedPhoto.id} isLiked={props.viewedPhoto.isLiked} />
+          <PhotoFavButton
+            toggleLike={props.toggleLike}
+            photoId={props.viewedPhoto.id}
+            isLiked={props.viewedPhoto.isLiked}
+          />
         </div>
-        <img className='photo-details-modal__image' src={props.photoSrc} />
+        <img
+          className='photo-details-modal__image'
+          src={props.photoSrc}
+        />
       </div>
       <div className='photo-details-modal__images'>
         <a className='photo-details-modal__header'>Similar Photos</a>
-        <PhotoList photos={props.similarPhotos} toggleLike={props.toggleLike} />
+        <PhotoList
+          photos={props.similarPhotos}
+          toggleLike={props.toggleLike}
+        />
       </div>
     </div>
   );
