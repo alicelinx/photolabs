@@ -10,13 +10,16 @@ import useApplicationData from "../hooks/useApplicationData";
 const HomeRoute = () => {
   const [topics, setTopics] = useState([]);
   const [topic, setTopic] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { state, dispatch } = useApplicationData();
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('/api/photos')
       .then(res => res.json())
       .then(data => {
         dispatch({ type: "UPDATE_PHOTOS", data });
+        setIsLoading(false);
       });
     fetch('/api/topics')
       .then(res => res.json())
@@ -68,11 +71,13 @@ const HomeRoute = () => {
         topics={topics}
         toggleTopic={toggleTopic}
         clearTopic={clearTopic}
+        isLoading={isLoading}
       />
       <PhotoList
         photos={state.newPhotos}
         toggleLike={toggleLike}
         openModal={toggleModal}
+        isLoading={isLoading}
       />
       {state.isModalOpen &&
         <PhotoDetailsModal

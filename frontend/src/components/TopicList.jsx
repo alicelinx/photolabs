@@ -4,11 +4,16 @@ import '../styles/TopicList.scss';
 
 import TopicListItem from './TopicListItem';
 import FavIcon from './FavIcon';
+import TopicListItemSkeleton from './TopicListItemSkeleton';
 
 const TopicList = (props) => {
+
+  const placeholderTopics = [...Array(5)];
+
   return (
     <div className="top-nav-bar__topic-list">
-      {props.topics.map((topic, index) =>
+      {props.isLoading && placeholderTopics.map((_, index) => <TopicListItemSkeleton key={index} />)}
+      {!props.isLoading && props.topics.map((topic, index) =>
         <TopicListItem
           key={index}
           title={topic.title}

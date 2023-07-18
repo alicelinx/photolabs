@@ -3,11 +3,16 @@ import React from 'react';
 import '../styles/PhotoList.scss';
 
 import PhotoListItem from './PhotoListItem';
+import PhotoListItemSkeleton from './PhotoListItemSkeleton';
 
 const PhotoList = (props) => {
+
+  const placeholderPhotos = [...Array(10)];
+
   return (
     <ul className="photo-list">
-      {props.photos.map((photo, index) =>
+      {props.isLoading && placeholderPhotos.map((_, index) => <PhotoListItemSkeleton key={index} />)}
+      {!props.isLoading && props.photos.map((photo, index) =>
         <PhotoListItem
           key={index}
           src={photo.urls.regular}
