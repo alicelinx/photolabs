@@ -1,6 +1,5 @@
-/* eslint-disable */
-import { useReducer } from 'react';
-
+import { useReducer, useEffect } from 'react';
+import reducer from '../reducer';
 const initialState = {
   newPhotos: [],
   likedPhotos: false,
@@ -8,124 +7,70 @@ const initialState = {
   viewedPhoto: null,
   similarPhotos: null,
   likedPhotoIds: [],
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'SWITCH_PHOTO_IS_LIKED': {
-      let likedPhotos = false;
-      for (const photo of state.newPhotos) {
-        if (photo.isLiked) {
-          likedPhotos = true;
-        }
-      }
-      return {
-        ...state,
-        likedPhotos,
-      };
-    }
-
-    case 'TOGGLE_LIKE': {
-      let viewedPhoto = state.viewedPhoto;
-      let similarPhotos = null;
-      let likedPhotoIds = [];
-
-      const newPhotos = state.newPhotos.map((photo) => {
-        if (photo.isLiked) {
-          // remove the unliked photo from  similarPhotosArr
-          likedPhotoIds = state.likedPhotoIds.filter((photo) => photo.id !== action.id);
-        } else {
-          // update the similarPhotosArr to include the liked photo
-          likedPhotoIds = [...state.likedPhotoIds, action.data];
-        }
-
-        if (photo.id === action.data) {
-          return {
-            ...photo,
-            isLiked: !photo.isLiked,
-          };
-        } else {
-          return photo;
-        }
-      });
-
-      if (state.viewedPhoto) {
-        if (state.viewedPhoto.id === action.data) {
-          viewedPhoto = {
-            ...viewedPhoto,
-            isLiked: !viewedPhoto.isLiked,
-          };
-        }
-      }
-
-      if (state.similarPhotos) {
-        const newSimilarPhotos = state.similarPhotos.map((photo) => {
-          if (photo.id === action.data) {
-            return {
-              ...photo,
-              isLiked: !photo.isLiked,
-            };
-          } else {
-            return photo;
-          }
-        });
-        similarPhotos = newSimilarPhotos;
-      }
-
-      return {
-        ...state,
-        newPhotos,
-        viewedPhoto,
-        similarPhotos,
-        likedPhotoIds,
-      };
-    }
-
-    case 'TOGGLE_MODAL': {
-      if (state.isModalOpen) {
-        return {
-          ...state,
-          isModalOpen: false,
-        };
-      }
-      const viewedPhoto = state.newPhotos.filter((photo) => photo.id === action.data)[0];
-      let similarPhotos = [];
-      Object.keys(viewedPhoto.similar_photos).forEach((key) => {
-        similarPhotos.push({ ...viewedPhoto.similar_photos[key], isLiked: state.likedPhotoIds.includes(viewedPhoto.similar_photos[key].id) });
-      });
-
-      return {
-        ...state,
-        isModalOpen: true,
-        viewedPhoto,
-        similarPhotos,
-      };
-    }
-
-    case 'UPDATE_PHOTOS': {
-      return {
-        ...state,
-        newPhotos: action.data.map((photo) => {
-          return {
-            ...photo,
-            // like the photo if id is in state.likedPhotosArr
-            isLiked: state.likedPhotoIds.includes(photo.id),
-          };
-        }),
-      };
-    }
-
-    default: {
-      console.log(`Unknown type: ${action.type}`);
-    }
-  }
+  topics: [],
+  topic: null
 };
 
 const useApplicationData = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    fetch('/api/photos')
+      .then(res => res.json())
+      .then(data => {
+        dispatch({ type: "UPDATE_PHOTOS", data });
+      });
+    fetch('/api/topics')
+      .then(res => res.json())
+      .then(data => dispatch({ type: 'UPDATE_TOPICS', data }));
+  }, []);
+
+  // fetch photos based on topic id
+  useEffect(() => {
+    if (state.topic) {
+      fetch(`/api/topics/photos/${state.topic}`)
+        .then(res => res.json())
+        .then(data => {
+          dispatch({ type: "UPDATE_PHOTOS", data });
+        });
+    } else { // remove current topic
+      fetch('/api/photos')
+        .then(res => res.json())
+        .then(data => {
+          dispatch({ type: "UPDATE_PHOTOS", data });
+        });
+    }
+  }, [state.topic]);
+
+  const handleShowLiked = () => {
+    dispatch({ type: 'SWITCH_PHOTO_IS_LIKED' });
+  };
+
+  const toggleLike = function(id) {
+    dispatch({ type: 'TOGGLE_LIKE', data: id });
+    handleShowLiked();
+  };
+
+  const toggleModal = (id) => {
+    dispatch({ type: 'TOGGLE_MODAL', data: id });
+  };
+
+  const toggleTopic = (id) => {
+    dispatch({ type: 'SET_TOPIC', data: id });
+  };
+
+  const clearTopic = () => {
+    dispatch({ type: 'SET_TOPIC', data: null });
+  };
+
+
   return {
     state,
     dispatch,
+    toggleLike,
+    toggleModal,
+    toggleTopic,
+    clearTopic
   };
 };
 
