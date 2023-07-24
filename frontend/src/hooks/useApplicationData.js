@@ -1,12 +1,13 @@
 /* eslint-disable */
-import { useReducer } from "react";
+import { useReducer } from 'react';
 
 const initialState = {
   newPhotos: [],
   likedPhotos: false,
   isModalOpen: false,
   viewedPhoto: null,
-  similarPhotos: null
+  similarPhotos: null,
+  likedPhotoIds: [],
 };
 
 const reducer = (state, action) => {
@@ -27,11 +28,21 @@ const reducer = (state, action) => {
     case 'TOGGLE_LIKE': {
       let viewedPhoto = state.viewedPhoto;
       let similarPhotos = null;
-      const newPhotos = state.newPhotos.map(photo => {
+      let likedPhotoIds = [];
+
+      const newPhotos = state.newPhotos.map((photo) => {
+        if (photo.isLiked) {
+          // remove the unliked photo from  similarPhotosArr
+          likedPhotoIds = state.likedPhotoIds.filter((photo) => photo.id !== action.id);
+        } else {
+          // update the similarPhotosArr to include the liked photo
+          likedPhotoIds = [...state.likedPhotoIds, action.data];
+        }
+
         if (photo.id === action.data) {
           return {
             ...photo,
-            isLiked: !photo.isLiked
+            isLiked: !photo.isLiked,
           };
         } else {
           return photo;
@@ -42,7 +53,7 @@ const reducer = (state, action) => {
         if (state.viewedPhoto.id === action.data) {
           viewedPhoto = {
             ...viewedPhoto,
-            isLiked: !viewedPhoto.isLiked
+            isLiked: !viewedPhoto.isLiked,
           };
         }
       }
@@ -65,7 +76,8 @@ const reducer = (state, action) => {
         ...state,
         newPhotos,
         viewedPhoto,
-        similarPhotos
+        similarPhotos,
+        likedPhotoIds,
       };
     }
 
@@ -76,10 +88,10 @@ const reducer = (state, action) => {
           isModalOpen: false,
         };
       }
-      const viewedPhoto = state.newPhotos.filter(photo => photo.id === action.data)[0];
+      const viewedPhoto = state.newPhotos.filter((photo) => photo.id === action.data)[0];
       let similarPhotos = [];
       Object.keys(viewedPhoto.similar_photos).forEach((key) => {
-        similarPhotos.push({ ...viewedPhoto.similar_photos[key], isLiked: false });
+        similarPhotos.push({ ...viewedPhoto.similar_photos[key], isLiked: state.likedPhotoIds.includes(viewedPhoto.similar_photos[key].id) });
       });
 
       return {
@@ -93,10 +105,11 @@ const reducer = (state, action) => {
     case 'UPDATE_PHOTOS': {
       return {
         ...state,
-        newPhotos: action.data.map(photo => {
+        newPhotos: action.data.map((photo) => {
           return {
             ...photo,
-            isLiked: false
+            // like the photo if id is in state.likedPhotosArr
+            isLiked: state.likedPhotoIds.includes(photo.id),
           };
         }),
       };
@@ -112,7 +125,7 @@ const useApplicationData = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return {
     state,
-    dispatch
+    dispatch,
   };
 };
 
